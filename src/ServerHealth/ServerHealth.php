@@ -21,9 +21,9 @@ class ServerHealth
     public function getResults(): void
     {
         $result = [
-            "status" => "TODO",
+            // "status" => "TODO",
             "results" => $this->results,
-            "version" => "TODO"
+            // "version" => "TODO"
         ];
 
         header('Content-Type: application/json; charset=utf-8');

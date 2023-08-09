@@ -1,7 +1,7 @@
 <?php
 
 class ServerStates {
-    final public const ok = 'OK';
-    final public const warning = 'Warning';
-    final public const error = 'Error';
+    final public const ok = 'ok';
+    final public const warning = 'warning';
+    final public const error = 'error';
 }
