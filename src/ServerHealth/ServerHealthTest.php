@@ -5,7 +5,7 @@ require_once __DIR__."/ServerStates.php";
 
 class ServerHealthTest
 {
-    protected string $status = '';
+    protected bool|string $status = false;
     protected string $name = '';
     protected string|null $description = '';
     protected int|float|null $value = null;
