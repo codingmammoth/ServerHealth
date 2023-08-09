@@ -12,7 +12,7 @@ class MySQLHealth extends ServerHealthTest
         $starttime = getStartTime();
 
         try {
-            $db = mysqli_connect($config['db_host'], $config['db_user'], $config['db_pass'], $config['db_name'], $config['db_port']);
+            $db = mysqli_connect($config['db_host'], $config['db_user'], $config['db_pass'], null, $config['db_port']);
 
             if ($db->connect_errno) {
                 $result = new ServerHealthResult(
