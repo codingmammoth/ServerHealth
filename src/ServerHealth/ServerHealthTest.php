@@ -5,35 +5,30 @@ require_once __DIR__."/ServerStates.php";
 
 class ServerHealthTest
 {
-    protected bool|string $status = false;
-    protected string $name = '';
-    protected string|null $description = '';
-    protected int|float|null $value = null;
     protected array $config = [];
+    protected array $results = [];
+    protected string $name = 'Server health test';
 
-    protected function performTest(): void {}
+    protected function performTests(): void {}
 
     public function run(): void
     {
         try {
-            $this->performTest();
+            $this->performTests();
         } catch (\Throwable $th) {
             $error = $th->getMessage();
-            $this->status = ServerStates::error;
-            $this->description = "Test failed. Error message: $error";
-            $this->value = null;
+            $result = new ServerHealthResult(
+                $this->name ? $this->name : $this::class, // Fallback to classname.
+                ServerStates::error,
+                "Test failed. Error message: $error"
+            );
+            $this->results[] = $result;
         }
     }
 
-    public function getResult(): array
+    public function getResults(): array
     {
-        $result = new ServerHealthResult(
-            $this->name ? $this->name : $this::class, // Fallback to classname.
-            $this->status, 
-            $this->description,
-            $this->value
-        );
-        return $result->getResult();
+        return $this->results;
     }
 
     public function __construct(array $config = [])

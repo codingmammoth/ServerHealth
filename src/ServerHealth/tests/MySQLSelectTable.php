@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/MySQLTest.php";
 
-class MySQLSelect extends MySQLTest
+class MySQLSelectTable extends MySQLTest
 {
     protected string $name = 'MySQL Select';
 
@@ -19,9 +19,29 @@ class MySQLSelect extends MySQLTest
                     ServerStates::error,
                     "Failed to select database " . $this->config['db_name']
                 );
-            } else {
-                $totaltime = getRunningTime($starttime);
+                return;
+            }
 
+
+            $failed_table_names = [];
+            foreach ($this->config['db_tables'] as $db_table) {
+                $sql  = "SELECT * FROM $db_table LIMIT 50";
+                $result = mysqli_query($db, $sql);
+
+                if (!$result) {
+                    $failed_table_names[] = $db_table;
+                }
+            }
+
+            $totaltime = getRunningTime($starttime);
+
+            if (count($failed_table_names) > 0) {
+                $this->result = new ServerHealthResult(
+                    $this->name,
+                    ServerStates::error,
+                    "Failed to select on tables (" . implode(', ', $failed_table_names) . ")"
+                );
+            } else {
                 $this->result = new ServerHealthResult(
                     $this->name,
                     ServerStates::ok,
@@ -34,7 +54,7 @@ class MySQLSelect extends MySQLTest
             $this->result = new ServerHealthResult(
                 $this->name,
                 ServerStates::error,
-                "Failed to select databases. Error: $error"
+                "Failed to select on tables. Error: $error"
             );
         }
     }
