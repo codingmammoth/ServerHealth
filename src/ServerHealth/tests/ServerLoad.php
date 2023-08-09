@@ -1,13 +1,12 @@
 <?php
 
 require_once __DIR__."../../ServerHealthTest.php";
-require_once __DIR__."../../functions/getLoads.php";
 
 class ServerLoad extends ServerHealthTest {
 
-	protected string $name = 'Load';
+	protected string $name = 'Server Load';
 
-	protected function performTest(): void
+	protected function performTests(): void
 	{   
         $loads = getLoads();
 
@@ -15,48 +14,52 @@ class ServerLoad extends ServerHealthTest {
 		$error_threshold = isset($this->config['error_threshold']) ? $this->config['error_threshold'] : 80;
 
         if ($loads === false) {
-            $this->status = ServerStates::error;
-            $this->description = "Couldn't get loads.";
-        } else if (!isset($this->config['loads_to_check']) || count($this->config['loads_to_check']) === 0) {
-          	$this->status = ServerStates::error;
-           	$this->description = "No loads to check.";
+            $result = new ServerHealthResult($this->name, ServerStates::error, "Couldn't get loads of server");
+            $this->results[] = $result;
+        } else if (!isset($this->config['tests']) || count($this->config['tests']) === 0) {
+            $result = new ServerHealthResult($this->name, ServerStates::error, "No loads to check.");
+            $this->results[] = $result;
 		} else {
-			$states = [];
-            $descriptions = [];
-            $selected_loads = [];
-
-            foreach ($this->config['loads_to_check'] as $selected_load) {
+            foreach ($this->config['tests'] as $selected_load) {
                 $load = false;
+                $description = null;
+                $state = false;
+                $name = '';
+
                 if ($selected_load === 'current') {
                     $load = $loads[0];
-                    $selected_loads[] = $loads[0];
-                    $descriptions[] = "Current load: $load.";
+                    $description = "Current load: $load.";
+                    $name = 'Current load';
                 } else if ($selected_load === 'average_5_min') {
                     $load = $loads[1];
-                    $selected_loads[] = $loads[1];
-                    $descriptions[] = "Load average 5 min: $load.";
+                    $description = "Load average 5 min: $load.";
+                    $name = 'Load average 5 minutes';
                 } else if ($selected_load === 'average_15_min') {
                     $load = $loads[2];
-                    $selected_loads[] = $loads[2];
-                    $descriptions[] = "Load average 15 min: $load.";
-                }
-
-                if ($load > $error_threshold) {
-                    $states[] = ServerStates::error;
-                } else if ($load > $warning_threshold) {
-                    $states[] = ServerStates::warning;
+                    $description = "Load average 15 min: $load.";
+                    $name = 'Load average 15 minutes';
                 } else {
-                    $states[] = ServerStates::ok;
+                    $load = false;
+                    $description = "Unsupported load (Only current, average_5_min and average_15_min are supported)";
+                    $name = $this->name . " ($selected_load)";
                 }
-            }
 
-            $this->status = ServerStates::getHighestState($states);
-            if ($this->status === false) {
-                $this->status = ServerStates::error;
-                $this->description = 'Could not determine the status';
-            } else {
-                $this->description = implode(' ', $descriptions);
-                $this->value = max($selected_loads);
+                if ($load !== false) {
+                    if ($load > $error_threshold) {
+                       $state = ServerStates::error;
+                   } else if ($load > $warning_threshold) {
+                       $state = ServerStates::warning;
+                   } else {
+                       $state = ServerStates::ok;
+                   }
+                } else {
+                    $state = ServerStates::error;
+                    $load = false;
+                }
+
+                $result = new ServerHealthResult($name, $state, $description, $load);
+
+                $this->results[] = $result;
             }
         }
 	}
