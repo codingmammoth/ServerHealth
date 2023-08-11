@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . "/MySQLTest.php";
-
 class MySQLPing extends ServerHealthTest
 {
     protected $name = 'MySQL Ping';

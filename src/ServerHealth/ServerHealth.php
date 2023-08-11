@@ -14,7 +14,6 @@ class ServerHealth
     {
         foreach ($this->tests as $test) {
             $result = $test->run();
-            // var_dump($result);
             $this->results[] = $result->getResult();
         }
     }
