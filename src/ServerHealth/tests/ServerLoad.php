@@ -64,7 +64,7 @@ class ServerLoad extends ServerHealthTest
                     $status = ServerStates::ok;
                 }
             } else {
-                $status = ServerStates::error;
+                $status = ServerStates::warning;
             }
 
             $result = new ServerHealthResult($name, $status, $description, $load);
