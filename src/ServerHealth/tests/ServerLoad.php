@@ -6,9 +6,20 @@ class ServerLoad extends ServerHealthTest {
 
 	protected string $name = 'Server Load';
 
+    protected function getLoads(): array
+    {
+        $loads = sys_getloadavg();
+
+        if ($loads === false) {
+            return false;
+        } else {
+            return $loads;
+        }
+    }
+
 	protected function performTests(): void
 	{   
-        $loads = getLoads();
+        $loads = $this->getLoads();
 
 		$warning_threshold = isset($this->config['warning_threshold']) ? $this->config['warning_threshold'] : 35;
 		$error_threshold = isset($this->config['error_threshold']) ? $this->config['error_threshold'] : 80;
