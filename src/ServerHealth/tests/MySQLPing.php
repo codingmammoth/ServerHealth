@@ -2,17 +2,23 @@
 
 require_once __DIR__ . "/MySQLTest.php";
 
-class MySQLPing extends MySQLTest
+class MySQLPing extends ServerHealthTest
 {
-    protected string $name = 'MySQL Ping';
+    protected $name = 'MySQL Ping';
 
-    public function run($db)
+    public function performTests()
     {
         set_time_limit(0);
         $starttime = getStartTime();
 
         try {
-            if (mysqli_ping($db)) {
+            if ($this->config['db'] === false) {
+                $this->result = new ServerHealthResult(
+                    $this->name,
+                    ServerStates::error,
+                    "Failed to ping, connect or login on the db-server."
+                );
+            } else if (mysqli_ping($this->config['db'])) {
                 $totaltime = getRunningTime($starttime);
 
                 $this->result = new ServerHealthResult(
