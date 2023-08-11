@@ -22,7 +22,7 @@ class MySQLSelect extends ServerHealthTest
             if (!isset($this->config['database']) || $this->config['database'] === '') {
                 $this->result = new ServerHealthResult(
                     $this->name,
-                    ServerStates::error,
+                    ServerStates::warning,
                     "No database to select."
                 );
                 return;
