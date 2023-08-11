@@ -6,21 +6,34 @@ require_once __DIR__."/src/ServerHealth/functions/functions.php";
 
 require_once __DIR__."/src/ServerHealth/ServerHealth.php";
 require_once __DIR__."/src/ServerHealth/tests/ServerLoad.php";
-require_once __DIR__."/src/ServerHealth/tests/MySQLHealth.php";
 require_once __DIR__."/src/ServerHealth/tests/MySQLPing.php";
 require_once __DIR__."/src/ServerHealth/tests/MySQLSelect.php";
-require_once __DIR__."/src/ServerHealth/tests/MySQLSelectTable.php";
+require_once __DIR__."/src/ServerHealth/tests/DiskSpace.php";
 
-error_reporting($error_level);
+error_reporting(E_ALL); // TODO: set to 0
+
+$db = false;
+$dbConfig = getDBConfig();
+if ($dbConfig['should_connect']) {
+    $db = connectToDB($dbConfig);
+}
 
 $health = new ServerHealth();
 $health->tests([
-    new ServerLoad(['warning_threshold' => 35, 'error_threshold' => 80, 'tests' => ['current', 'average_5_min', 'average_15_min']]),
-    new MySQLHealth(['db_config' => $db_config, 'tests' => [
-        new MySQLPing($db_config,),
-        new MySQLSelect($db_config),
-        new MySQLSelectTable($db_config)
+    new ServerLoad([ 'type' => 'current', 'warning_threshold' => 75, 'error_threshold' => 90 ]),
+    new ServerLoad([ 'type' => 'average_5_min', 'warning_threshold' => 50, 'error_threshold' => 75 ]),
+    new ServerLoad([ 'type' => 'average_15_min', 'warning_threshold' => 25, 'error_threshold' => 50 ]),
+    new MySQLPing([ 'db' => $db ]),
+    new MySQLSelect([ 'db' => $db, 'database' => 'example_database', 'database_table' => 'todo_list' ]),
+    // MySQLConnections
+    // MYSQLFreeSpace
+    new DiskSpace([ 'disks' => [
+        ['name' => '/dev/sda1', 'warning_threshold' => 50, 'error_threshold' => 75],
+        ['name' => '/dev/sda2', 'warning_threshold' => 50, 'error_threshold' => 75],
     ]])
 ]);
 $health->run();
-$health->getResults();
+$results = $health->getResults();
+
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode($results);
