@@ -23,10 +23,10 @@ class ServerLoad extends ServerHealthTest
         $loads = $this->getLoads();
 
         if ($loads === false) {
-            $result = new ServerHealthResult($this->name, 2, "Couldn't get loads of server");
+            $result = new ServerHealthResult($this->name, ServerStates::error, "Couldn't get loads of server");
             $this->result = $result;
         } else if (!isset($this->config['type'])) {
-            $result = new ServerHealthResult($this->name, 2, "No load to check.");
+            $result = new ServerHealthResult($this->name, ServerStates::error, "No load to check.");
             $this->result = $result;
         } else {
             $warning_threshold = isset($this->config['warning_threshold']) ? $this->config['warning_threshold'] : 50;
@@ -57,14 +57,14 @@ class ServerLoad extends ServerHealthTest
 
             if ($load !== false) {
                 if ($load > $error_threshold) {
-                    $status = 2;
+                    $status = ServerStates::error;
                 } else if ($load > $warning_threshold) {
-                    $status = 1;
+                    $status = ServerStates::warning;
                 } else {
-                    $status = 0;
+                    $status = ServerStates::ok;
                 }
             } else {
-                $status = 2;
+                $status = ServerStates::error;
             }
 
             $result = new ServerHealthResult($name, $status, $description, $load);

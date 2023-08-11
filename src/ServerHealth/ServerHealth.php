@@ -5,31 +5,32 @@ class ServerHealth
     private $tests = [];
     private $results = [];
 
-    public function tests(array $tests): void
+    public function tests(array $tests)
     {
         $this->tests = $tests;
     }
 
-    public function run(): void
+    public function run()
     {
         foreach ($this->tests as $test) {
-            $test->run();
-            $test_results = $test->getResults();
-            foreach ($test_results as $result) {
-                $this->results[] = $result->getResult();
-            }
+            $result = $test->run();
+            // var_dump($result);
+            $this->results[] = $result->getResult();
         }
     }
 
-    public function getResults(): void
+    public function getResults()
     {
-        $result = [
-    //         // "status" => "TODO",
+        $results = [
             "results" => $this->results,
-    //         // "version" => "TODO"
         ];
 
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($result);
+        $test_states = array_map(function($result) {
+            return $result['status'];
+        }, $this->results);
+
+        $results['status'] = ServerStates::getHighestState($test_states);
+
+        return $results;
     }
 }

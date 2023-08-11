@@ -5,13 +5,13 @@ require_once __DIR__."/ServerStates.php";
 
 class ServerHealthTest
 {
-    protected array $config = [];
-    protected array $results = [];
-    protected string $name = 'Server health test';
+    protected $config = [];
+    protected $result = null;
+    protected $name = 'Server health test';
 
-    protected function performTests(): void {}
+    protected function performTests() {}
 
-    public function run(): void
+    public function run()
     {
         try {
             $this->performTests();
@@ -22,13 +22,10 @@ class ServerHealthTest
                 ServerStates::error,
                 "Test failed. Error message: $error"
             );
-            $this->results[] = $result;
+            $this->result = $result;
         }
-    }
 
-    public function getResults(): array
-    {
-        return $this->results;
+        return $this->result;
     }
 
     public function __construct(array $config = [])

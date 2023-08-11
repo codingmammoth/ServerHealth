@@ -2,12 +2,12 @@
 
 class ServerHealthResult
 {
-    private string $name = '';
-    private string $status = '';
-    private string|null $description = null;
-    private int|float|null $value = null;
+    private $name = '';
+    private $status = '';
+    private $description = null;
+    private $value = null;
 
-    public function getResult(): array
+    public function getResult()
     {
         return [
             'name' => $this->name,
