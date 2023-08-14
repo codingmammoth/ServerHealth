@@ -1,12 +1,12 @@
 <?php
 
-function getStartTime(): int|float
+function getStartTime()
 {
     $starttime = explode(' ', microtime());  
     return $starttime[1] + $starttime[0];
 }
 
-function getRunningTime($starttime, $round = 5): int|float
+function getRunningTime($starttime, $round = 5)
 {
     $mtime = explode(' ', microtime());  
     $totaltime = $mtime[0] +  $mtime[1] - $starttime;
