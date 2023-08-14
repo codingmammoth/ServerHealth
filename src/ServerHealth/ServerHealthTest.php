@@ -32,6 +32,6 @@ class ServerHealthTest
     public function __construct(array $config = [], $db = false)
     {
         $this->config = $config;
-        $this->db;
+        $this->db = $db;
     }
 }
