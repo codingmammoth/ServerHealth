@@ -29,7 +29,7 @@ class ServerHealthTest
         return $this->result;
     }
 
-    public function __construct(array $config = [], $db = false)
+    public function __construct(array $config = [], $db = null)
     {
         $this->config = $config;
         $this->db = $db;
