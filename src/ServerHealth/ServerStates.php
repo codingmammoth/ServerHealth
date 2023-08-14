@@ -1,11 +1,11 @@
 <?php
 
 class ServerStates {
-    final public const ok = 'ok';
-    final public const warning = 'warning';
-    final public const error = 'error';
+    public const ok = 'ok';
+    public const warning = 'warning';
+    public const error = 'error';
 
-    public static function getHighestState(array $states): bool|string
+    public static function getHighestState(array $states)
     {
         if (in_array(ServerStates::error, $states)) {
             return ServerStates::error;
