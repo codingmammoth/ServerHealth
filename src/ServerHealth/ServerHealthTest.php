@@ -6,6 +6,7 @@ require_once __DIR__."/ServerStates.php";
 class ServerHealthTest
 {
     protected $config = [];
+    protected $db = false;
     protected $result = null;
     protected $name = 'Server health test';
 
@@ -28,8 +29,9 @@ class ServerHealthTest
         return $this->result;
     }
 
-    public function __construct(array $config = [])
+    public function __construct(array $config = [], $db = false)
     {
         $this->config = $config;
+        $this->db;
     }
 }

@@ -10,7 +10,7 @@ class MySQLSelect extends ServerHealthTest
         $starttime = getStartTime();
 
         try {
-            if ($this->config['db'] === false) {
+            if ($this->db === false) {
                 $this->result = new ServerHealthResult(
                     $this->name,
                     ServerStates::error,
@@ -27,7 +27,7 @@ class MySQLSelect extends ServerHealthTest
                 );
                 return;
             } else {
-                $result = mysqli_select_db($this->config['db'], $this->config['database']);
+                $result = mysqli_select_db($this->db, $this->config['database']);
                 if (!$result) {
                     $this->result = new ServerHealthResult(
                         $this->name,
@@ -40,7 +40,7 @@ class MySQLSelect extends ServerHealthTest
 
             if (isset($this->config['database_table'])) {
                 $sql  = "SELECT * FROM " . $this->config['database_table'] . " LIMIT 50";
-                $result = mysqli_query($this->config['db'], $sql);
+                $result = mysqli_query($this->db, $sql);
                 if (!$result) {
                     $this->result = new ServerHealthResult(
                         $this->name,
