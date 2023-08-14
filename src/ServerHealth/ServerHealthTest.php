@@ -19,7 +19,7 @@ class ServerHealthTest
         } catch (\Throwable $th) {
             $error = $th->getMessage();
             $result = new ServerHealthResult(
-                $this->name ? $this->name : $this::class, // Fallback to classname.
+                $this->name,
                 ServerStates::error,
                 "Test failed. Error message: $error"
             );
