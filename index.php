@@ -20,8 +20,8 @@ if ($dbConfig['should_connect']) {
 
 $health = new ServerHealth();
 $health->tests([
-    new ServerLoad([ 'type' => 'current', 'warning_threshold' => 1.5, 'error_threshold' => 3 ]),
-    new ServerLoad([ 'type' => 'average_5_min', 'warning_threshold' => 1, 'error_threshold' => 2 ]),
+    new ServerLoad([ 'type' => 'current', 'warning_threshold' => 5, 'error_threshold' => 10 ]),
+    new ServerLoad([ 'type' => 'average_5_min', 'warning_threshold' => 2.5, 'error_threshold' => 5 ]),
     new ServerLoad([ 'type' => 'average_15_min', 'warning_threshold' => 0.5, 'error_threshold' => 1 ]),
     new MySQLPing([], $db),
     new MySQLSelect([ 'database' => 'example_database', 'database_table' => 'todo_list' ], $db),
