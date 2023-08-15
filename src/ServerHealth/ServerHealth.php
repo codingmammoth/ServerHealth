@@ -16,6 +16,8 @@ class ServerHealth
             $result = $test->run();
             $this->results[] = $result->getResult();
         }
+
+        return $this->getResults();
     }
 
     public function getResults()

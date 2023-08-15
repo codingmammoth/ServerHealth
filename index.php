@@ -30,8 +30,7 @@ $health->tests([
         ['name' => '/dev/sda2', 'warning_threshold' => 50, 'error_threshold' => 75],
     ]])
 ]);
-$health->run();
-$results = $health->getResults();
+$results = $health->run();
 
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($results);
