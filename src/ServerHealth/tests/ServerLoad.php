@@ -23,11 +23,9 @@ class ServerLoad extends ServerHealthTest
         $loads = $this->getLoads();
 
         if ($loads === false) {
-            $result = new ServerHealthResult($this->name, ServerStates::error, "Couldn't get loads of server");
-            $this->result = $result;
+            $this->result = new ServerHealthResult($this->name, ServerStates::error, "Couldn't get loads of server");
         } else if (!isset($this->config['type'])) {
-            $result = new ServerHealthResult($this->name, ServerStates::error, "No load to check.");
-            $this->result = $result;
+            $this->result = new ServerHealthResult($this->name, ServerStates::error, "No load to check.");
         } else {
             $warning_threshold = isset($this->config['warning_threshold']) ? $this->config['warning_threshold'] : 50;
             $error_threshold = isset($this->config['error_threshold']) ? $this->config['error_threshold'] : 75;
@@ -56,9 +54,9 @@ class ServerLoad extends ServerHealthTest
             }
 
             if ($load !== false) {
-                if ($load > $error_threshold) {
+                if ($load >= $error_threshold) {
                     $status = ServerStates::error;
-                } else if ($load > $warning_threshold) {
+                } else if ($load >= $warning_threshold) {
                     $status = ServerStates::warning;
                 } else {
                     $status = ServerStates::ok;
@@ -67,8 +65,7 @@ class ServerLoad extends ServerHealthTest
                 $status = ServerStates::warning;
             }
 
-            $result = new ServerHealthResult($name, $status, $description, $load);
-            $this->result = $result;
+            $this->result = new ServerHealthResult($name, $status, $description, $load);
         }
     }
 }
