@@ -28,7 +28,7 @@ class ServerLoad extends ServerHealthTest
             $this->result = new ServerHealthResult($this->name, ServerStates::error, "No config set.");
         } else {
             $warning_threshold = isset($this->config['warning_threshold']) ? $this->config['warning_threshold'] : 5;
-            $error_threshold = isset($this->config['error_threshold']) ? $this->config['error_threshold'] : 10;
+            $error_threshold = isset($this->config['error_threshold']) ? $this->config['error_threshold'] : 15;
 
             $name = '';
             $load = false;
