@@ -3,7 +3,6 @@
 class ServerHealth
 {
     private $tests = [];
-    private $results = [];
 
     public function tests(array $tests)
     {
@@ -12,26 +11,23 @@ class ServerHealth
 
     public function run()
     {
+        $test_results = [];
+
         foreach ($this->tests as $test) {
-            $result = $test->run();
-            $this->results[] = $result->getResult();
+            $test_result = $test->run();
+            $test_results[] = $test_result->getResult();
         }
 
-        return $this->getResults();
-    }
-
-    public function getResults()
-    {
-        $results = [
-            "results" => $this->results,
+        $data = [
+            "results" => $test_results,
         ];
 
         $test_states = array_map(function($result) {
             return $result['status'];
-        }, $this->results);
+        }, $test_results);
 
-        $results['status'] = ServerStates::getHighestState($test_states);
+        $data['status'] = ServerStates::getHighestState($test_states);
 
-        return $results;
+        return $data;
     }
 }
