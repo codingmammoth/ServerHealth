@@ -29,8 +29,8 @@ class DiskSpace extends ServerHealthTest
             foreach ($this->config['disks'] as $disk) {
                 if ($disk['name'] === $disk_name) {
                     $disks_found[] = $disk_name;
-                    $warning_percentage_threshold = isset($disk['warning_percentage_threshold']) ? $disk['warning_percentage_threshold'] : 50;
-                    $error_percentage_threshold = isset($disk['error_percentage_threshold']) ? $disk['error_percentage_threshold'] : 75;
+                    $warning_percentage_threshold = isset($disk['warning_percentage_threshold']) ? $disk['warning_percentage_threshold'] : 75;
+                    $error_percentage_threshold = isset($disk['error_percentage_threshold']) ? $disk['error_percentage_threshold'] : 90;
 
                     $proc = explode("%", $disk_usage[$i]);
                     $proc = $proc[0];
