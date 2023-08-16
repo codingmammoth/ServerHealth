@@ -26,8 +26,8 @@ $health->tests([
     new MySQLPing([], $db),
     new MySQLSelect([ 'database' => 'example_database', 'database_table' => 'todo_list' ], $db),
     new DiskSpace([ 'disks' => [
-        ['name' => '/dev/sda1', 'warning_percentage_threshold' => 50, 'error_percentage_threshold' => 75],
-        ['name' => '/dev/sda2', 'warning_percentage_threshold' => 50, 'error_percentage_threshold' => 75],
+        ['name' => '/dev/sda1', 'warning_percentage_threshold' => 75, 'error_percentage_threshold' => 90],
+        ['name' => '/dev/sda2', 'warning_percentage_threshold' => 75, 'error_percentage_threshold' => 90],
     ]])
 ]);
 $results = $health->run();
