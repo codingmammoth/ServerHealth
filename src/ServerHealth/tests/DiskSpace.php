@@ -54,9 +54,13 @@ class DiskSpace extends ServerHealthTest
             }
         }
 
-        $status = ServerStates::ok;
-        if ($warning) $status = ServerStates::warning; 
-        if ($error) $status = ServerStates::error;
+        if ($error) {
+            $status = ServerStates::error;
+        } else if ($warning) {
+            $status = ServerStates::warning;
+        } else {
+            $status = ServerStates::ok;
+        }
 
         $value = max($values);
 
