@@ -13,7 +13,8 @@ class MySQLFetchOperation extends ServerHealthTest
                 $this->result = new ServerHealthResult(
                     $this->name,
                     ServerStates::error,
-                    "Failed to connect or login on the db server."
+                    "Failed to connect or login on the db server.",
+                    getRunningTime($starttime)
                 );
                 return;
             }
@@ -22,7 +23,8 @@ class MySQLFetchOperation extends ServerHealthTest
                 $this->result = new ServerHealthResult(
                     $this->name,
                     ServerStates::warning,
-                    "No database to select."
+                    "No database to select.",
+                    getRunningTime($starttime)
                 );
                 return;
             } else {
@@ -31,7 +33,8 @@ class MySQLFetchOperation extends ServerHealthTest
                     $this->result = new ServerHealthResult(
                         $this->name,
                         ServerStates::error,
-                        "Failed to select database " . $this->config['database']
+                        "Failed to select database " . $this->config['database'],
+                        getRunningTime($starttime)
                     );
                     return;
                 }
@@ -44,7 +47,8 @@ class MySQLFetchOperation extends ServerHealthTest
                     $this->result = new ServerHealthResult(
                         $this->name,
                         ServerStates::error,
-                        "Failed to select table " . $this->config['database_table']
+                        "Failed to select table " . $this->config['database_table'],
+                        getRunningTime($starttime)
                     );
                     return;
                 }
@@ -62,7 +66,8 @@ class MySQLFetchOperation extends ServerHealthTest
             $this->result = new ServerHealthResult(
                 $this->name,
                 ServerStates::error,
-                "Error: $error"
+                "Error: $error",
+                getRunningTime($starttime)
             );
         }
     }
