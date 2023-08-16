@@ -1,8 +1,8 @@
 <?php
 
-class MySQLSelect extends ServerHealthTest
+class MySQLFetchOperation extends ServerHealthTest
 {
-    protected $name = 'MySQL Select';
+    protected $name = 'MySQL Fetch Operation';
 
     public function performTests()
     {

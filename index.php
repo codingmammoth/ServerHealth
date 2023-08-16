@@ -7,7 +7,7 @@ require_once __DIR__."/src/ServerHealth/functions/functions.php";
 require_once __DIR__."/src/ServerHealth/ServerHealth.php";
 require_once __DIR__."/src/ServerHealth/tests/ServerLoad.php";
 require_once __DIR__."/src/ServerHealth/tests/MySQLPing.php";
-require_once __DIR__."/src/ServerHealth/tests/MySQLSelect.php";
+require_once __DIR__."/src/ServerHealth/tests/MySQLFetchOperation.php";
 require_once __DIR__."/src/ServerHealth/tests/DiskSpace.php";
 
 error_reporting(0);
@@ -24,7 +24,7 @@ $health->tests([
     new ServerLoad([ 'type' => 'average_5_min', 'warning_threshold' => 2.5, 'error_threshold' => 7.5 ]),
     new ServerLoad([ 'type' => 'average_15_min', 'warning_threshold' => 1, 'error_threshold' => 3 ]),
     new MySQLPing([], $db),
-    new MySQLSelect([ 'database' => 'example_database', 'database_table' => 'todo_list' ], $db),
+    new MySQLFetchOperation([ 'database' => 'example_database', 'database_table' => 'todo_list' ], $db),
     new DiskSpace([ 'disks' => [
         ['name' => '/dev/sda1', 'warning_percentage_threshold' => 75, 'error_percentage_threshold' => 90],
         ['name' => '/dev/sda2', 'warning_percentage_threshold' => 75, 'error_percentage_threshold' => 90],
