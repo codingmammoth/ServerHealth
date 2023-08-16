@@ -6,7 +6,6 @@ class MySQLSelect extends ServerHealthTest
 
     public function performTests()
     {
-        set_time_limit(0);
         $starttime = getStartTime();
 
         try {
