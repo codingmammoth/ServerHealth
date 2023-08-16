@@ -21,8 +21,8 @@ if ($dbConfig['should_connect']) {
 $health = new ServerHealth();
 $health->tests([
     new ServerLoad([ 'type' => 'current', 'warning_threshold' => 5, 'error_threshold' => 15 ]),
-    new ServerLoad([ 'type' => 'average_5_min', 'warning_threshold' => 2.5, 'error_threshold' => 7.5 ]),
-    new ServerLoad([ 'type' => 'average_15_min', 'warning_threshold' => 1, 'error_threshold' => 3 ]),
+    new ServerLoad([ 'type' => 'average_5_min', 'warning_threshold' => 5, 'error_threshold' => 15 ]),
+    new ServerLoad([ 'type' => 'average_15_min', 'warning_threshold' => 5, 'error_threshold' => 15 ]),
     new MySQLPing([], $db),
     new MySQLFetchOperation([ 'database' => 'example_database', 'database_table' => 'todo_list' ], $db),
     new DiskSpace([ 'disks' => [
