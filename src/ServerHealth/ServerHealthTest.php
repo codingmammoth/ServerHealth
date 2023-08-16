@@ -26,7 +26,7 @@ class ServerHealthTest
             $this->result = $result;
         }
 
-        return $this->result;
+        return $this->result->getResult();
     }
 
     public function __construct(array $config = [], $db = null)
