@@ -10,37 +10,41 @@ class MySQLPing extends ServerHealthTest
 
         try {
             if ($this->db === false) {
-                $this->result = new ServerHealthResult(
+                $result = new ServerHealthResult(
                     $this->name,
                     ServerStates::error,
                     "Failed to connect or login on the db server.",
                     getRunningTime($starttime)
                 );
+                return $result->getResult();
             } else if (mysqli_ping($this->db)) {
                 $totaltime = getRunningTime($starttime);
 
-                $this->result = new ServerHealthResult(
+                $result = new ServerHealthResult(
                     $this->name,
                     ServerStates::ok,
                     "Total time: $totaltime",
                     $totaltime
                 );
+                return $result->getResult();
             } else {
-                $this->result = new ServerHealthResult(
+                $result = new ServerHealthResult(
                     $this->name,
                     ServerStates::error,
                     "Failed to ping the db server",
                     getRunningTime($starttime)
                 );
+                return $result->getResult();
             }
         } catch (\Throwable $th) {
             $error = $th->getMessage();
-            $this->result = new ServerHealthResult(
+            $result = new ServerHealthResult(
                 $this->name,
                 ServerStates::error,
                 "Failed to ping, connect or login on the db server. Error: $error",
                 getRunningTime($starttime)
             );
+            return $result->getResult();
         }
     }
 }

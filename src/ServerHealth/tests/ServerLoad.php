@@ -23,9 +23,11 @@ class ServerLoad extends ServerHealthTest
         $loads = $this->getLoads();
 
         if ($loads === false) {
-            $this->result = new ServerHealthResult($this->name, ServerStates::error, "Couldn't get loads of server");
+            $result = new ServerHealthResult($this->name, ServerStates::error, "Couldn't get loads of server");
+            return $result->getResult();
         } else if (!isset($this->config['type'])) {
-            $this->result = new ServerHealthResult($this->name, ServerStates::error, "No config set.");
+            $result = new ServerHealthResult($this->name, ServerStates::error, "No config set.");
+            return $result->getResult();
         } else {
             $warning_threshold = isset($this->config['warning_threshold']) ? $this->config['warning_threshold'] : 5;
             $error_threshold = isset($this->config['error_threshold']) ? $this->config['error_threshold'] : 15;
@@ -38,15 +40,15 @@ class ServerLoad extends ServerHealthTest
             if ($this->config['type'] === 'current') {
                 $name = 'Current load';
                 $load = $loads[0];
-                $description = "Load: " . $load . ".";
+                $description = "Load: " . $load;
             } else if ($this->config['type'] === 'average_5_min') {
                 $name = 'Load average 5 min';
                 $load = $loads[1];
-                $description = "Load average: " . $load . ".";
+                $description = "Load average: " . $load;
             } else if ($this->config['type'] === 'average_15_min') {
                 $name = 'Load average 15 min';
                 $load = $loads[2];
-                $description = "Load average: " . $load . ".";
+                $description = "Load average: " . $load;
             } else {
                 $name = $this->name;
                 $load = false;
@@ -65,7 +67,8 @@ class ServerLoad extends ServerHealthTest
                 $status = ServerStates::warning;
             }
 
-            $this->result = new ServerHealthResult($name, $status, $description, $load);
+            $result = new ServerHealthResult($name, $status, $description, $load);
+            return $result->getResult();
         }
     }
 }

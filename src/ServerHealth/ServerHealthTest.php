@@ -7,7 +7,6 @@ class ServerHealthTest
 {
     protected $config = [];
     protected $db = false;
-    protected $result = null;
     protected $name = 'Server health test';
 
     protected function performTests() {}
@@ -15,7 +14,7 @@ class ServerHealthTest
     public function run()
     {
         try {
-            $this->performTests();
+            return $this->performTests();
         } catch (\Throwable $th) {
             $error = $th->getMessage();
             $result = new ServerHealthResult(
@@ -23,10 +22,8 @@ class ServerHealthTest
                 ServerStates::error,
                 "Test failed. Error message: $error"
             );
-            $this->result = $result;
+            return $result->getResult();
         }
-
-        return $this->result->getResult();
     }
 
     public function __construct(array $config = [], $db = null)
