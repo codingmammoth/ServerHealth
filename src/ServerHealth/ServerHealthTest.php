@@ -17,12 +17,11 @@ class ServerHealthTest
             return $this->performTests();
         } catch (\Throwable $th) {
             $error = $th->getMessage();
-            $result = new ServerHealthResult(
+            return new ServerHealthResult(
                 $this->name,
                 ServerStates::error,
                 "Test failed. Error message: $error"
             );
-            return $result->getResult();
         }
     }
 

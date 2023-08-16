@@ -9,8 +9,7 @@ class DiskSpace extends ServerHealthTest
     protected function performTests()
     {
         if (!isset($this->config['disks']) || count($this->config['disks']) === 0) {
-            $result = new ServerHealthResult($this->name, ServerStates::error, "No disks to monitor.");
-            return $result->getResult();
+            return new ServerHealthResult($this->name, ServerStates::error, "No disks to monitor.");
         }
 
         $disk_usage = shell_exec("df -h"); // This request should be allowed on your server
@@ -64,7 +63,6 @@ class DiskSpace extends ServerHealthTest
 
         $value = max($values);
 
-        $result = new ServerHealthResult($this->name, $status, implode(', ', $descriptions), $value);
-        return $result->getResult();
+        return new ServerHealthResult($this->name, $status, implode(', ', $descriptions), $value);
     }
 }

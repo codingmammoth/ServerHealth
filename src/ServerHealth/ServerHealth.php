@@ -14,7 +14,8 @@ class ServerHealth
         $test_results = [];
 
         foreach ($this->tests as $test) {
-            $test_results[] = $test->run();
+            $test_result = $test->run();
+            $test_results[] = $test_result->getResult();
         }
 
         $data = [
