@@ -38,7 +38,7 @@ class DiskSpace extends ServerHealthTest
                     $proc = $proc[count($proc) - 1];
 
                     $values[] = (float) $proc;
-                    $descriptions[] = "$disk_name (" . $proc . "%)";
+                    $descriptions[] = "$disk_name " . $proc . "%";
                     
                     if ($proc > $warning_percentage_threshold) $warning = true;
                     if ($proc > $error_percentage_threshold) $error = true;
@@ -50,7 +50,7 @@ class DiskSpace extends ServerHealthTest
         foreach ($this->config['disks'] as $disk) {
             if (!in_array($disk['name'], $disks_found)) {
                 $warning = true;
-                $descriptions[] = $disk['name'] . " not found.";
+                $descriptions[] = $disk['name'] . " disk not found";
             }
         }
 
@@ -64,6 +64,6 @@ class DiskSpace extends ServerHealthTest
 
         $value = max($values);
 
-        $this->result = new ServerHealthResult($this->name, $status, implode(' | ', $descriptions), $value);
+        $this->result = new ServerHealthResult($this->name, $status, implode(', ', $descriptions), $value);
     }
 }
