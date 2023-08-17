@@ -42,7 +42,7 @@ function getConfig() {
             ],
             [
                 'test' => 'MemoryUsage',
-                'config' => []
+                'config' => [ 'warning_percentage_threshold' => 90, 'error_percentage_threshold' => 95 ]
             ]
         ]
     ];
