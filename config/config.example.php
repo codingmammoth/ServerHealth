@@ -39,6 +39,10 @@ function getConfig() {
                         ['name' => '/dev/sda2', 'warning_percentage_threshold' => 75, 'error_percentage_threshold' => 90],
                     ]
                 ]
+            ],
+            [
+                'test' => 'MemoryUsage',
+                'config' => []
             ]
         ]
     ];
