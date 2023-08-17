@@ -14,35 +14,40 @@ function getRunningTime($starttime, $round = 5)
 }
 
 function getTests ($config) {
-    $db = false;
-    $tests = [];
+    try {
+        $db = false;
+        $tests = [];
 
-    if ($config['db']['connect']) {
-        $db = connectToDB($config['db']);
-    }
-
-    $include_path_default_tests = '/../tests/';
-    $include_path_custom_tests = '/../customtests/';
-
-    foreach ($config['tests'] as $test) {
-        $test_class = $test['test'];
-        $test_config = $test['config'];
-
-        $include_path = false;
-        if (file_exists(__DIR__ . $include_path_custom_tests . $test_class . '.php')) {
-            $include_path = __DIR__ . $include_path_custom_tests . $test_class . '.php';
-        } else if (file_exists(__DIR__ . $include_path_default_tests . $test_class . '.php')) {
-            $include_path = __DIR__ . $include_path_default_tests . $test_class . '.php';
-        } else {
-            header('HTTP/1.1 500 Internal Server Error');
-            exit("Test not found ($test_class)");
+        if ($config['db']['connect']) {
+            $db = connectToDB($config['db']);
         }
 
-        require_once $include_path;
-        $tests[] = new $test_class($test_config, $db);
-    }
+        $include_path_default_tests = '/../tests/';
+        $include_path_custom_tests = '/../customtests/';
 
-    return $tests;
+        foreach ($config['tests'] as $test) {
+            $test_class = $test['test'];
+            $test_config = $test['config'];
+
+            $include_path = false;
+            if (file_exists(__DIR__ . $include_path_custom_tests . $test_class . '.php')) {
+                $include_path = __DIR__ . $include_path_custom_tests . $test_class . '.php';
+            } else if (file_exists(__DIR__ . $include_path_default_tests . $test_class . '.php')) {
+                $include_path = __DIR__ . $include_path_default_tests . $test_class . '.php';
+            } else {
+                header('HTTP/1.1 500 Internal Server Error');
+                exit("Test not found ($test_class)");
+            }
+
+            require_once $include_path;
+            $tests[] = new $test_class($test_config, $db);
+        }
+
+        return $tests;
+    } catch (\Throwable $th) {
+        header('HTTP/1.1 500 Internal Server Error');
+        exit("Error when getting the tests. Error: " . $th->getMessage());
+    }
 }
 
 function connectToDB($config)
