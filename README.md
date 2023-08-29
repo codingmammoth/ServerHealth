@@ -2,4 +2,4 @@ Semonto Health Framework is a health endpoint provided by Semonto, our website a
 
 Credits: Coding Mammoth BV
 
-License: See [https://github.com/codingmammoth/ServerHealth/blob/main/LICENSE](LICENSE)
+License: See [LICENSE](https://github.com/codingmammoth/ServerHealth/blob/main/LICENSE)
