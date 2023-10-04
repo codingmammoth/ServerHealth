@@ -9,6 +9,10 @@ require_once __DIR__."/src/ServerHealth/ServerStates.php";
 error_reporting(0);
 
 $config = getConfig();
+if (!validateSecretKey($config)) {
+    http_response_code(403);
+    exit();
+}
 $tests = getTests($config);
 $health = new ServerHealth();
 $health->tests($tests);

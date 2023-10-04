@@ -64,3 +64,16 @@ function connectToDB($config)
         return false;
     }
 }
+
+function validateSecretKey($config)
+{
+    if (isset($config['secret_key']) && $config['secret_key'] !== '') {
+        if (isset($_SERVER['HTTP_SEMONTO_SECRET_KEY'])) {
+            return strcmp($config['secret_key'], $_SERVER['HTTP_SEMONTO_SECRET_KEY']) === 0;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
+}
