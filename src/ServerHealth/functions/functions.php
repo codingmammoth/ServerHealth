@@ -13,14 +13,9 @@ function getRunningTime($starttime, $round = 5)
     return round($totaltime, $round);
 }
 
-function getTests ($config) {
+function getTests ($config, $db) {
     try {
-        $db = false;
         $tests = [];
-
-        if ($config['db']['connect']) {
-            $db = connectToDB($config['db']);
-        }
 
         $include_path_default_tests = '/../tests/';
         $include_path_custom_tests = '/../customtests/';
