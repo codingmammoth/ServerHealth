@@ -47,6 +47,8 @@ class MySQLFetchOperation extends ServerHealthTest
                         "Failed to select table " . $this->config['database_table'],
                         getRunningTime($starttime)
                     );
+                } else {
+                    $sql_result->close();
                 }
             }
 
