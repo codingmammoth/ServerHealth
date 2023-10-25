@@ -10,6 +10,11 @@ error_reporting(0);
 
 $config = getConfig();
 
+if (!validateSecretKey($config)) {
+    http_response_code(403);
+    exit();
+}
+
 $db = false;
 if ($config['db']['connect']) {
     $db = connectToDB($config['db']);
