@@ -61,7 +61,10 @@ class DiskSpace extends ServerHealthTest
             $status = ServerStates::ok;
         }
 
-        $value = max($values);
+        $value = null;
+        if (count($values) > 0) {
+            $value = max($values);
+        }
 
         return new ServerHealthResult($this->name, $status, implode(', ', $descriptions), $value);
     }
