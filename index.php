@@ -15,18 +15,29 @@ if (!validateSecretKey($config)) {
     exit();
 }
 
-$db = false;
-if ($config['db']['connect']) {
-    $db = connectToDB($config['db']);
-}
+$installed_directory = __DIR__;
+$cache_location = $config['cache_location'];
+$cache_life_span = $config['cache_life_span'];
+$cache_file_path = getCacheFilePath($cache_location, $installed_directory);
 
-$tests = getTests($config, $db);
-$health = new ServerHealth();
-$health->tests($tests);
-$results = $health->run();
+$results = getCachedResults($cache_file_path, $cache_life_span);
 
-if ($db) {
-    $db->close();
+if (!$results) {
+    $db = false;
+    if ($config['db']['connect']) {
+        $db = connectToDB($config['db']);
+    }
+
+    $tests = getTests($config, $db);
+    $health = new ServerHealth();
+    $health->tests($tests);
+    $results = $health->run();
+
+    if ($db) {
+        $db->close();
+    }
+
+    cacheResults($cache_file_path, $results);
 }
 
 if ($results['status'] !== ServerStates::ok) { http_response_code(500); }
