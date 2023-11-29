@@ -4,6 +4,7 @@ function getConfig() {
     $config = [
         'secret_key' => '', // The secret key shown in the settings for this server in Semonto.
         'db' => [
+            'get_db' => null,
             'connect' => true,
             'db_host' => '', // Database-hostname (default: localhost)
             'db_user' =>'sammy', // Database-username

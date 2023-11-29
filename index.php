@@ -16,7 +16,11 @@ if (!validateSecretKey($config)) {
 }
 
 $db = false;
-if ($config['db']['connect']) {
+if ($config['db']['connect'] && $config['db']['get_db']) {
+    if (function_exists($config['db']['get_db'])) {
+        $db = $config['db']['get_db']();
+    }
+} else if ($config['db']['connect']) {
     $db = connectToDB($config['db']);
 }
 
