@@ -15,6 +15,13 @@ class DiskSpace extends ServerHealthTest
         $disk_usage = shell_exec("df -h"); // This request should be allowed on your server
 		$disk_usage = explode("\n", $disk_usage);
 
+        if ($disk_usage===null||disk_usage===false) {//error
+            return new ServerHealthResult(
+                $this->name,
+                ServerStates::error,
+            );
+        }
+
         $error = false;
         $warning = false;
         $descriptions = [];

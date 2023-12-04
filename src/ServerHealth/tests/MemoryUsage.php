@@ -10,7 +10,19 @@ class MemoryUsage extends ServerHealthTest
     {
         try {
             $res = [];
-            exec("vmstat -S M -s", $res);
+
+            $resultcode = -1;
+            $result = exec("vmstat -S M -s", $res,$resultcode);
+           
+            if ($result === false ||  $result != 0) {//error
+                $errorMessage = "Cannot execute test, error code: $resultcode";
+                return new ServerHealthResult(
+                    $this->name,
+                    ServerStates::error,
+                    $errorMessage
+                );
+            }
+
             $total = $res[0];
             $total = explode(" M", $total);
             $total = $total[0];
