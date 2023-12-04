@@ -11,17 +11,16 @@ class DiskSpace extends ServerHealthTest
         if (!isset($this->config['disks']) || count($this->config['disks']) === 0) {
             return new ServerHealthResult($this->name, ServerStates::error, "No disks to monitor.");
         }
-
         $disk_usage = shell_exec("df -h"); // This request should be allowed on your server
 		$disk_usage = explode("\n", $disk_usage);
 
-        if ($disk_usage===null||disk_usage===false) {//error
+        if ($disk_usage===null||$disk_usage===false) {//error
             return new ServerHealthResult(
                 $this->name,
                 ServerStates::error,
+                "Failed to retrieve disk space information."
             );
         }
-
         $error = false;
         $warning = false;
         $descriptions = [];
