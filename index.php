@@ -17,7 +17,13 @@ if (!validateSecretKey($config)) {
 
 $db = false;
 if ($config['db']['connect']) {
-    $db = connectToDB($config['db']);
+    if (isset($config['db']['initialise_type']) && $config['db']['initialise_type'] == 'via_function') {
+        echo "connecting via function\n";
+        $db = $config['db']['function_name']();
+    } else {
+        echo "connecting via credentials\n";
+        $db = connectToDB($config['db']);
+    }
 }
 
 $tests = getTests($config, $db);
