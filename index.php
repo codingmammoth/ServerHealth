@@ -15,12 +15,12 @@ if (!validateSecretKey($config)) {
     exit();
 }
 
-$installed_directory = __DIR__;
-$cache_location = $config['cache_location'];
-$cache_life_span = $config['cache_life_span'];
-$cache_file_path = getCacheFilePath($cache_location, $installed_directory);
+[ $cache_enabled, $cache_file_path, $cache_life_span ] = getCacheConfig($config, __DIR__);
 
-$results = getCachedResults($cache_file_path, $cache_life_span);
+$results = false;
+if ($cache_enabled) {
+    $results = getCachedResults($cache_file_path, $cache_life_span);
+}
 
 if (!$results) {
     $db = false;
@@ -37,7 +37,9 @@ if (!$results) {
         $db->close();
     }
 
-    cacheResults($cache_file_path, $results);
+    if ($cache_enabled) {
+        cacheResults($cache_file_path, $results);
+    }
 }
 
 if ($results['status'] !== ServerStates::ok) { http_response_code(500); }
