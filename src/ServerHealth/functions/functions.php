@@ -73,6 +73,32 @@ function validateSecretKey($config)
     }
 }
 
+function getCacheConfig($config, $installation_directory)
+{
+    $cache_enabled = false;
+    $cache_location = sys_get_temp_dir();
+    $cache_file_path = '';
+    $cache_life_span = 45;
+
+    if (isset($config['cache'])) {
+        if (isset($config['cache']['enabled']) && $config['cache']['enabled']) {
+            $cache_enabled = true;
+        }
+
+        if (isset($config['cache']['location'])) {
+            $cache_location = (string) $config['cache']['location'];
+        }
+
+        if (isset($config['cache']['life_span'])) {
+            $cache_life_span = (int) $config['cache']['life_span'];
+        }
+
+        $cache_file_path = getCacheFilePath($cache_location, $installation_directory);
+    }
+
+    return [ $cache_enabled, $cache_file_path, $cache_life_span ];
+}
+
 function getCacheFilePath($cache_location, $installed_directory)
 {
     return $cache_location . '/server_health_' . md5($installed_directory) . '.json';
