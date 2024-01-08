@@ -4,8 +4,11 @@ function getConfig() {
 
     $config = [
         'secret_key' => '', // The secret key shown in the settings for this server in Semonto.
-        'cache_location' => sys_get_temp_dir(), // The directory to store the cache.
-        'cache_life_span' => 45, // The maximum life span for the cached results in seconds.
+        'cache' => [
+            'location' => sys_get_temp_dir(), // The directory to store the cache.
+            'life_span' => 45, // The maximum life span for the cached results in seconds.
+            'enabled' => true
+        ],
         'db' => [
             'connect' => true,
             'db_host' => '', // Database-hostname (default: localhost)
