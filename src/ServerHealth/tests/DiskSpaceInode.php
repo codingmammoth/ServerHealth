@@ -62,7 +62,7 @@ class DiskSpaceInode extends ServerHealthTest
             $status = ServerStates::ok;
         }
 
-        $value = count($values) > 0? max($values) : null;
+        $value = count($values) > 0 ? max($values) : null;
 
         return new ServerHealthResult($this->name, $status, implode(', ', $descriptions), $value);
     }
