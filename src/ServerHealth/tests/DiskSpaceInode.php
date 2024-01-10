@@ -30,7 +30,7 @@ class DiskSpaceInode extends ServerHealthTest
                 exec("df -i " . $disk['name'] . " 2>&1", $disk_space_inode);
             } catch (\Throwable $th) {
                 $warning = true;
-                $descriptions[] = 'Failed to get the inode disk usage for ' . $disk['name'];
+                $descriptions[] = 'Failed to get the inode disk usage for ' . $disk['name'] . ' (' . $th->getMessage() . ')';
                 continue;
             }
 
@@ -50,7 +50,7 @@ class DiskSpaceInode extends ServerHealthTest
                 if ($percentage > $error_percentage_threshold) $error = true;
             } else {
                 $warning = true;
-                $descriptions[] = 'Failed to get the inode disk usage for ' . $disk['name'];
+                $descriptions[] = 'Failed to get the inode disk usage for ' . $disk['name'] . ' (' . $disk_space_inode[0] . ')';
             }
         }
 
