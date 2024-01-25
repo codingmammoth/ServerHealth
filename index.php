@@ -15,18 +15,36 @@ if (!validateSecretKey($config)) {
     exit();
 }
 
-$db = false;
-if ($config['db']['connect']) {
-    $db = connectToDB($config['db']);
+[ $cache_enabled, $cache_file_path, $cache_life_span ] = getCacheConfig($config, __DIR__);
+
+$results = false;
+if ($cache_enabled) {
+    $results = getCachedResults($cache_file_path, $cache_life_span);
 }
 
-$tests = getTests($config, $db);
-$health = new ServerHealth();
-$health->tests($tests);
-$results = $health->run();
+if (!$results) {
+    $db = false;
+    if ($config['db']['connect']) {
+        $db = connectToDB($config['db']);
+        if (isset($config['db']['initialise_type']) && $config['db']['initialise_type'] == 'via_function') {
+            $db = $config['db']['function_name']();
+        } else {
+            $db = connectToDB($config['db']);
+        }
+    }
 
-if ($db) {
-    $db->close();
+    $tests = getTests($config, $db);
+    $health = new ServerHealth();
+    $health->tests($tests);
+    $results = $health->run();
+
+    if ($db) {
+        $db->close();
+    }
+
+    if ($cache_enabled) {
+        cacheResults($cache_file_path, $results);
+    }
 }
 
 if ($results['status'] !== ServerStates::ok) { http_response_code(500); }
