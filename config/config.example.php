@@ -10,6 +10,8 @@ function getConfig() {
             'enabled' => true
         ],
         'db' => [
+            'initialise_type' => 'credentials', // Or 'via_function'
+            'function_name' => null,
             'connect' => true,
             'db_host' => '', // Database-hostname (default: localhost)
             'db_user' =>'sammy', // Database-username

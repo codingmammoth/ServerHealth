@@ -26,6 +26,11 @@ if (!$results) {
     $db = false;
     if ($config['db']['connect']) {
         $db = connectToDB($config['db']);
+        if (isset($config['db']['initialise_type']) && $config['db']['initialise_type'] == 'via_function') {
+            $db = $config['db']['function_name']();
+        } else {
+            $db = connectToDB($config['db']);
+        }
     }
 
     $tests = getTests($config, $db);
