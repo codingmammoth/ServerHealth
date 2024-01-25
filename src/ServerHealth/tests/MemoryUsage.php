@@ -14,7 +14,7 @@ class MemoryUsage extends ServerHealthTest
             $resultcode = -1;
             $result = exec("vmstat -S M -s", $res,$resultcode);
            
-            if ($result === false ||  $result != 0) {//error
+            if ($result === false || count($res) === 0) {
                 $errorMessage = "Cannot execute test, error code: $resultcode";
                 return new ServerHealthResult(
                     $this->name,
