@@ -1,5 +1,20 @@
 <?php
 
+use function Semonto\ServerHealth\{
+    validateSecretKey,
+    getTests,
+    getConfig,
+    getCacheConfig,
+    getCachedResults,
+    connectToDB,
+    cacheResults
+};
+
+use Semonto\ServerHealth\{
+    ServerStates,
+    ServerHealth
+};
+
 require_once __DIR__."/config/config.php";
 
 require_once __DIR__."/src/ServerHealth/functions/functions.php";

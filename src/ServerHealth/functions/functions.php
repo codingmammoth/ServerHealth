@@ -1,5 +1,7 @@
 <?php
 
+namespace Semonto\ServerHealth;
+
 function getStartTime()
 {
     $starttime = explode(' ', microtime());  
@@ -22,6 +24,7 @@ function getTests ($config, $db) {
 
         foreach ($config['tests'] as $test) {
             $test_class = $test['test'];
+            $test_class_with_name_space = "Semonto\\ServerHealth\\$test_class";
             $test_config = $test['config'];
 
             $include_path = false;
@@ -35,7 +38,7 @@ function getTests ($config, $db) {
             }
 
             require_once $include_path;
-            $tests[] = new $test_class($test_config, $db);
+            $tests[] = new $test_class_with_name_space($test_config, $db);
         }
 
         return $tests;
