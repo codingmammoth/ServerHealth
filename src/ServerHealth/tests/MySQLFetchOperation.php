@@ -1,5 +1,13 @@
 <?php
 
+namespace Semonto\ServerHealth;
+
+use Semonto\ServerHealth\{
+    ServerStates,
+    ServerHealthResult,
+    ServerHealthTest
+};
+
 class MySQLFetchOperation extends ServerHealthTest
 {
     protected $name = 'MySQL Fetch Operation';
