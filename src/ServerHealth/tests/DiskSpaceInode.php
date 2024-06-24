@@ -30,13 +30,15 @@ class DiskSpaceInode extends ServerHealthTest
         try {
             exec("df -i 2>&1", $disk_usage);
         } catch (\Throwable $th) {
-            $status = ServerStates::error;
-            $descriptions[] = 'Failed to get the inode disk usage. (' . $th->getMessage() . ')';
+            return new ServerHealthResult(
+                $this->name,
+                ServerStates::error,
+                'Failed to get the inode disk usage. (' . $th->getMessage() . ')', 
+                null
+            );
         }
 
-        if ($error) {
-            return new ServerHealthResult($this->name, $status, implode(', ', $descriptions), null);
-        } else if (count($disk_usage) <= 1) {
+        if (count($disk_usage) <= 1) {
             return new ServerHealthResult($this->name, ServerStates::error, 'Failed to get the inode disk usage.', null);
         }
 
