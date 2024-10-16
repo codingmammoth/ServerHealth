@@ -55,15 +55,15 @@ class MySQLMaXDBConnections extends ServerHealthTest
                     }
                 }
 
-                if ($max_connections !== false && (int) $max_connections >= 0 && $current_connections !== false && (int) $current_connections >= 0) {
+                if ($max_connections !== false && (int) $max_connections > 0 && $current_connections !== false && (int) $current_connections >= 0) {
                     $percentage_connections = number_format((($current_connections / $max_connections) * 100), 2, ".", "");
                     $value = $current_connections;
                     $description = "Number of connections: $current_connections ($percentage_connections%)";
 
                     if ($percentage_connections >= $warning_percentage_threshold) {
-                        $status =  $status = ServerStates::warning;
+                        $status = ServerStates::warning;
                     } else if ($percentage_connections >= $error_percentage_threshold) {
-                        $status =  $status = ServerStates::error;
+                        $status = ServerStates::error;
                     }
                 } else {
                     $status = ServerStates::error;
