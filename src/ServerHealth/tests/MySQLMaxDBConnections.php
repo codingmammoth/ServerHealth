@@ -10,9 +10,9 @@ use Semonto\ServerHealth\{
 
 require_once __DIR__ . "../../ServerHealthTest.php";
 
-class MySQLMaXDBConnections extends ServerHealthTest
+class MySQLMaxDBConnections extends ServerHealthTest
 {
-    protected $name = 'MySQL MaX DB Connections';
+    protected $name = 'MySQL Max DB Connections';
 
     protected function performTests()
     {

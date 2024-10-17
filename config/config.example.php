@@ -43,7 +43,7 @@ function getConfig() {
                 'config' => [ 'database' => 'example_database', 'database_table' => 'todo_list' ]
             ],
             [
-                'test' => 'MySQLMaXDBConnections',
+                'test' => 'MySQLMaxDBConnections',
                 'config' => [ 'warning_percentage_threshold' => 75, 'error_percentage_threshold' => 90 ]
             ],
             [
