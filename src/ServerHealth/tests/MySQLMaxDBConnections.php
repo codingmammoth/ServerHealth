@@ -44,7 +44,7 @@ class MySQLMaxDBConnections extends ServerHealthTest
                 }
 
                 $current_connections = false;
-                if ($this->db->real_query("SHOW STATUS LIKE 'Threads_connected' LIMIT 1")) {
+                if ($this->db->real_query("SHOW STATUS LIKE 'Threads_connected'")) {
                     if ($result = $this->db->use_result()) {
                         if ($row = $result->fetch_assoc()) {
                             if (isset($row['Value'])) {
@@ -58,7 +58,7 @@ class MySQLMaxDBConnections extends ServerHealthTest
                 if ($max_connections !== false && (int) $max_connections > 0 && $current_connections !== false && (int) $current_connections >= 0) {
                     $percentage_connections = number_format((($current_connections / $max_connections) * 100), 2, ".", "");
                     $value = $current_connections;
-                    $description = "Number of connections: $current_connections ($percentage_connections%) LIMIT 1";
+                    $description = "Number of connections: $current_connections ($percentage_connections%)";
 
                     if ($percentage_connections >= $warning_percentage_threshold) {
                         $status = ServerStates::warning;
